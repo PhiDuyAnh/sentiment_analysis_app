@@ -1,5 +1,6 @@
 from transformers import pipeline, AutoTokenizer, AutoModelForSequenceClassification
 from typing import Optional
+from datetime import datetime
 import streamlit as st
 
 class AppModel:
@@ -47,6 +48,10 @@ def main():
                 results = model.classify(prompt_english)[0]
                 chat_message = st.chat_message('assistant')
                 chat_message.markdown(f'The sentence is {results['label'].capitalize()} with a probability of {results['score']:.2%}!')
+                
+                print(f'============================{datetime.now().strftime('%d-%m-%Y %H:%M:%S')}============================')
+                print(prompt_english)
+                print(results['label'], results['score'], end='\n\n')
 
     if button2:
         with result_placeholder2.container():
@@ -60,6 +65,10 @@ def main():
                     chat_message.markdown(f'Câu đã nhập mang sắc thái Tiêu cực với xác suất {results['score']:.2%}!')
                 else:
                     chat_message.markdown(f'Câu đã nhập mang sắc thái Trung lập với xác suất {results['score']:.2%}!')
+
+                print(f'============================{datetime.now().strftime('%d-%m-%Y %H:%M:%S')}============================')
+                print(prompt_vn)
+                print(results['label'], results['score'], end='\n\n')
 
 if __name__ == '__main__':
     main()
