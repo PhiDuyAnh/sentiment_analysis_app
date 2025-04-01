@@ -1,7 +1,7 @@
 from transformers import pipeline, AutoTokenizer, AutoModelForSequenceClassification
 from typing import Optional
 from datetime import datetime
-import sys
+import os
 import streamlit as st
 
 class AppModel:
@@ -48,11 +48,11 @@ def main():
                 model = AppModel('distilbert/distilbert-base-uncased-finetuned-sst-2-english')
                 results = model.classify(prompt_english)[0]
                 chat_message = st.chat_message('assistant')
-                chat_message.markdown(f'The sentence is {results['label'].capitalize()} with a probability of {results['score']:.2%}!')
+                chat_message.markdown(f'The sentence is {results["label"].capitalize()} with a probability of {results["score"]:.2%}!')
                 
-                sys.stdout.write(f'============================{datetime.now().strftime('%d-%m-%Y %H:%M:%S')}============================\n')
-                sys.stdout.write(f'{prompt_english}\n')
-                sys.stdout.write(f'{results["label"]}, {results["score"]}\n\n')
+                os.write(1, f'============================{datetime.now().strftime("%d-%m-%Y %H:%M:%S")}============================\n'.encode())
+                os.write(1, f'{prompt_english}\n'.encode())
+                os.write(1, f'{results["label"]}, {results["score"]}\n\n'.encode())
 
     if button2:
         with result_placeholder2.container():
@@ -61,15 +61,15 @@ def main():
                 results = model.classify(prompt_vn)[0]
                 chat_message = st.chat_message('assistant')
                 if results['label'] == 'POS':
-                    chat_message.markdown(f'Câu đã nhập mang sắc thái Tích cực với xác suất {results['score']:.2%}!')
+                    chat_message.markdown(f'Câu đã nhập mang sắc thái Tích cực với xác suất {results["score"]:.2%}!')
                 elif results['label'] == 'NEG':
-                    chat_message.markdown(f'Câu đã nhập mang sắc thái Tiêu cực với xác suất {results['score']:.2%}!')
+                    chat_message.markdown(f'Câu đã nhập mang sắc thái Tiêu cực với xác suất {results["score"]:.2%}!')
                 else:
-                    chat_message.markdown(f'Câu đã nhập mang sắc thái Trung lập với xác suất {results['score']:.2%}!')
+                    chat_message.markdown(f'Câu đã nhập mang sắc thái Trung lập với xác suất {results["score"]:.2%}!')
 
-                sys.stdout.write(f'============================{datetime.now().strftime('%d-%m-%Y %H:%M:%S')}============================\n')
-                sys.stdout.write(f'{prompt_vn}\n')
-                sys.stdout.write(f'{results["label"]}, {results["score"]}\n\n')
+                os.write(1, f'============================{datetime.now().strftime("%d-%m-%Y %H:%M:%S")}============================\n'.encode())
+                os.write(1, f'{prompt_vn}\n'.encode())
+                os.write(1, f'{results["label"]}, {results["score"]}\n\n'.encode())
                 
 
 if __name__ == '__main__':
